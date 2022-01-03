@@ -75,7 +75,7 @@
                         <?php
                         
                           if($res1==1 && $row["description"]){?>
-                            <div class="text mt-3"> <span><?php echo $row["description"] ?> </span> </div>
+                            <div class="text text-center mt-3"> <span><?php echo $row["description"] ?> </span> </div>
                           <?php
                           $counter+=1;
                           }

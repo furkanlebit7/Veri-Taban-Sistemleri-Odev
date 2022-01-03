@@ -81,7 +81,7 @@
                         <?php
                         
                           if($res1==1 && $row["description"]){?>
-                            <div class="text mt-3"> <span><?php echo $row["description"] ?> </span> </div>
+                            <div class="text text-center mt-3"> <span><?php echo $row["description"] ?> </span> </div>
                           <?php
                           $counter+=1;
                           }
@@ -115,9 +115,10 @@
               
         <div class="col-9">
           <div class="container mt-4 mb-4 p-3">
-                 <form method="POST">
+                 
                      <?php
                         if($res1==1){?>
+                        <form method="POST">
                             <div class="form-group col-md-6">
                       <label for="inputGithub">Github Link</label>
                       <input value="<?php if($github){echo $github;} ?>"  type="text" class="form-control" name="inputGithub" id="inputGithub" placeholder="Github Link Here">
@@ -128,13 +129,16 @@
                     </div>
                     <div class="form-group col-md-6 mt-3">
                       <label for="inputIdentity4">Description</label>
-                      <textarea  class="form-control" id="inputIdentity4" type="text" placeholder="Description Here"><?php if($desc){echo $desc;}?></textarea>
-                    </div>                  
+                      <textarea  class="form-control" id="inputDesc" name="inputDesc" type="text" placeholder="Description Here"><?php if($desc){echo $desc;}?></textarea>
+                    </div>
+                    <button type="submit" id="profileLinkSubmit" name="profileLinkSubmit" class="btn btn-primary mt-3">Save</button>
+                </form>    
                         <?php    
                         }else{?>
+                        <form method="POST">
                             <div class="form-group col-md-6">
                       <label for="inputGithub">Github Link</label>
-                      <input  type="password" class="form-control" name="inputGithub" id="inputGithub" placeholder="Github Link Here">
+                      <input  type="text" class="form-control" name="inputGithub" id="inputGithub" placeholder="Github Link Here">
                     </div>
                     <div class="form-group col-md-6 mt-3">
                       <label for="inputLinkedin">Linkedin Link</label>
@@ -142,30 +146,84 @@
                     </div>
                     <div class="form-group col-md-6 mt-3">
                       <label for="inputIdentity4">Description</label>
-                      <textarea  class="form-control" id="inputIdentity4" type="text" placeholder="Description Here"></textarea>
-                    </div>                  
+                      <textarea  class="form-control" id="inputDesc" name="inputDesc" type="text" placeholder="Description Here"></textarea>
+                    </div>
+                    <button type="submit" id="profileLinkZeroSubmit" name="profileLinkZeroSubmit" class="btn btn-primary mt-3">Save</button>
+                    </form>          
                         <?php
                         }
                      ?>
                     
-                  <button type="submit" id="profileSubmit" name="profileSubmit" class="btn btn-primary mt-3">Save</button>
-                </form>
+                  
           </div>
         </div>
       </div>
     </div>
   
      <?php
-      if(isset($_POST["profileSubmit"])){
-        $candidatePassword=$_POST["candidatePassword"];
-        $candidateName=$_POST["candidateName"];
-        $candidateSurname=$_POST["candidateSurname"];
-        $candidatePhoto=$_POST["inputPhoto"];
-
+      if(isset($_POST["profileLinkSubmit"])){
+        $candidateGithub=$_POST["inputGithub"];
+        $candidateLinkedin=$_POST["inputLinkedin"];
+        $candidateDesc=$_POST["inputDesc"];
         
-        $res = mysqli_query($db,"UPDATE users SET password = '$candidatePassword' WHERE id = '$id'");
-        $res = mysqli_query($db,"UPDATE candidates SET first_name = '$candidateName', last_name='$candidateSurname',photo='$candidatePhoto' WHERE id = '$id'");
+
+        //desc güncellenmioyr ora bi bak
+       $ras = mysqli_query($db,"UPDATE resumes SET candidate_github = '$candidateGithub', candidate_linkedin='$candidateLinkedin',description='$candidateDesc' WHERE candidate_id = '$id'");
+       if($ras==1){
+          ?>
+          <script>
+           window.onload=function(){
+            alert("Değişiklikler başarılı bir şekilde kaydedildi");
+           }
+        </script>
+          <?php
+          }else{
+            ?>
+
+            <script>
+           window.onload=function(){
+            alert("Değişiklikler başarılı bir şekilde kaydedildi");
+           }
+        </script>
+          <?php
+            
+          }
       }
+         ?>
+     <?php
+      if(isset($_POST["profileLinkZeroSubmit"])){
+        $candidateGithub=$_POST["inputGithub"];
+        $candidateLinkedin=$_POST["inputLinkedin"];
+        $candidateDesc=$_POST["inputDesc"];
+        
+        $check = mysqli_query($db,"SELECT * FROM resumes WHERE candidate_id='$id'");
+        $che=mysqli_num_rows($check);
+        if($che!=1){
+           $ras = mysqli_query($db,"INSERT INTO resumes (candidate_id,candidate_github,candidate_linkedin,description) VALUES ('$id','$candidateGithub','$candidateLinkedin','$candidateDesc')");
+        if($ras){
+          ?>
+          <script>
+           window.onload=function(){
+            alert("Değişiklikler başarılı bir şekilde kaydedildi");
+           }
+        </script>
+          <?php
+          }else{
+            ?>
+
+            <script>
+           window.onload=function(){
+            alert("Değişiklikler başarılı bir şekilde kaydedildi");
+           }
+        </script>
+          <?php
+            
+          }
+        }
+        
+       
+        }
+      
          ?>
 
 
