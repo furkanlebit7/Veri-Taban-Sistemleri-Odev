@@ -33,7 +33,13 @@
                       <a class="nav-link" href="#">Companies</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Profile</a>
+                      <a class="nav-link" href="http://localhost/veritabani/profile.php">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                     <a class="nav-link" href="http://localhost/veritabani/editProfile.php">My Links</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="http://localhost/veritabani/resume.php">Resume</a>
                     </li>
                   </ul>
                 </div>
@@ -167,7 +173,6 @@
         $candidateDesc=$_POST["inputDesc"];
         
 
-        //desc güncellenmioyr ora bi bak
        $ras = mysqli_query($db,"UPDATE resumes SET candidate_github = '$candidateGithub', candidate_linkedin='$candidateLinkedin',description='$candidateDesc' WHERE candidate_id = '$id'");
        if($ras==1){
           ?>

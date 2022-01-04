@@ -60,6 +60,16 @@
         <input id="sign_up_password" name="sign_up_password" type="password" />
         <p class="error" id="sign_up_password_error"></p>
       </label>
+      <div class="radios">
+        <div>
+          <input type="radio" name="sign_up_radio"  value="0" checked/>
+          <label class="radioLabel">Candidate</label>
+        </div>
+        <div>
+          <input type="radio" name="sign_up_radio"  value="1"/>
+          <label class="radioLabel">Employer</label>
+        </div>
+      </div>
       <button name="sign_up_button" type="submit" id="sign_up" class="submit">Sign Up</button>
 </form>
   </div>
@@ -119,10 +129,13 @@
       $row = mysqli_fetch_assoc($res);
       if($res1==1){
         session_start();
-               $_SESSION["userEmail"]=$signInEmail;
-               $_SESSION["userId"]=$row["id"];
-               Header("Location:completeLogin.php");
-        echo $row["id"];
+        $_SESSION["userEmail"]=$signInEmail;
+        $_SESSION["userId"]=$row["id"];
+        if($row["type"]==0){
+        Header("Location:completeLogin.php");
+        }else{
+        Header("Location:completeCompanyLogin.php");
+        }
        }else{
          ?>
          <script>

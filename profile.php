@@ -33,7 +33,13 @@
                       <a class="nav-link" href="#">Companies</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Profile</a>
+                      <a class="nav-link" href="http://localhost/veritabani/profile.php">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="http://localhost/veritabani/editProfile.php">My Links</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="http://localhost/veritabani/resume.php">Resume</a>
                     </li>
                   </ul>
                 </div>
