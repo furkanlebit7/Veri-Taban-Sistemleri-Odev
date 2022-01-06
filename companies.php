@@ -115,64 +115,33 @@
               
         <div class="col-9">
           <div class="container mt-4 mb-4 p-3">
-                 <form method="POST">
-                  <div class="form-row d-flex justify-content-between">
-                    <div class="form-group col-md-6">
-                      <label for="inputEmail4">Email</label>
-                      <input value="<?php echo $userRow["email"] ?>" type="email" class="form-control" name="candidateEmail" id="inputEmail4" placeholder="Email " readonly>
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="inputPassword4">Password</label>
-                      <input value="<?php echo $userRow["password"] ?>" type="password" class="form-control" name="candidatePassword" id="inputPassword4" placeholder="Password">
-                    </div>
-                  </div>
-                  <div class="form-row d-flex justify-content-between">
-                     <div class="form-group col-md-6 mt-3">
-                      <label for="inputNme4">Name</label>
-                      <input value="<?php echo $candidates["first_name"] ?>" type="text" class="form-control" name="candidateName" id="inputNme4" placeholder="Name">
-                    </div>
-                    <div class="form-group col-md-6 mt-3">
-                      <label for="inputSurname4">Surname</label>
-                      <input value="<?php echo $candidates["last_name"] ?>" type="text" class="form-control" name="candidateSurname" id="inputSurname4" placeholder="Surname">
-                    </div>
-                  </div>
-                   
-                    <div class="form-group col-md-6 mt-3">
-                      <label for="inputIdentity4">Identity Number</label>
-                      <input value="<?php echo $candidates["identity_number"]; ?>" class="form-control" id="inputIdentity4" type="text" placeholder="identity" readonly>
-                    </div>
-                    <div class="form-group col-md-6 mt-3">
-                      <label for="inputCity">Birth Date</label>
-                      <input value="<?php echo $candidates["birth_date"]; ?>" type="date" name="candidateBirthday" class="form-control" id="inputBirthday" readonly>
-                    </div>
-                    <div class="form-group col-md-6 mt-3">
-                      <img src="<?php echo "photos/".$userPhoto ?>" alt="..." class="img-thumbnail w-50">
-                      <div class="custom-file mt-2">
-                        <input type="file" class="custom-file-input" id="inputPhoto" name="inputPhoto">
+              <div class="cards d-flex flex-wrap">
+                    <?php
+                    //gets resume
+                $companiesRes = mysqli_query($db,"SELECT * FROM employers");   
+                $companiesRes1=mysqli_num_rows($companiesRes);
+                
+                while($companiesRow = mysqli_fetch_assoc($companiesRes)){
+                    ?>
+                    <div class="card text-center align-items-center mb-4 p-3" style="width: 18rem; margin-right:20px;">
+                      <img class="card-img-top" src="<?php echo "photos/".$companiesRow["company_logo"] ?>" alt="Comany Logo" style="width:150px;height:120px;">
+                      <div class="card-body ">
+                        <h4 class="card-title text-danger"><?php echo $companiesRow["company_name"] ?></h4>
+                        <p class="text-secondary"><u><?php echo $companiesRow["phone_number"] ?></u></p>
+                        <a href="./companyProfileDetail.php?companyId=<?php echo$companiesRow["id"] ?>" class="btn btn-dark">Profile</a>
                       </div>
                     </div>
-                  
-                  <button type="submit" id="profileSubmit" name="profileSubmit" class="btn btn-primary mt-3">Save</button>
-                </form>
+                    <?php
+                }
+                    ?>
+
+            </div>
           </div>
         </div>
       </div>
     </div>
   
-     <?php
-      if(isset($_POST["profileSubmit"])){
-        $candidatePassword=$_POST["candidatePassword"];
-        $candidateName=$_POST["candidateName"];
-        $candidateSurname=$_POST["candidateSurname"];
-        $candidatePhoto=$_POST["inputPhoto"];
-
-        
-        $res = mysqli_query($db,"UPDATE users SET password = '$candidatePassword' WHERE id = '$id'");
-        $res = mysqli_query($db,"UPDATE candidates SET first_name = '$candidateName', last_name='$candidateSurname',photo='$candidatePhoto' WHERE id = '$id'");
-      }
-         ?>
-
-
+    
 
 
 

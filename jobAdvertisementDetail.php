@@ -112,72 +112,84 @@
                    </div>
                   </div>
                   </div>
+
+              <?php 
+              $advertisementId=$_GET["advertisementId"] 
+              ?>
+
+              <?php
+              $jobAdvertisementRes = mysqli_query($db,"SELECT job_advertisements.id,job_advertisements.description,job_advertisements.min_salary,job_advertisements.max_salary,job_advertisements.created_date,job_advertisements.job_feature,job_advertisements.job_type,cities.city_name,job_titles.title,employers.company_name FROM job_advertisements JOIN cities ON cities.id=job_advertisements.city_id JOIN employers ON employers.id=job_advertisements.employer_id JOIN job_titles ON job_titles.id=job_advertisements.job_title_id WHERE job_advertisements.id='$advertisementId'");
+              $jobAdvertisementRes1=mysqli_num_rows($jobAdvertisementRes);              
+              ?>
+
+                 
               
         <div class="col-9">
           <div class="container mt-4 mb-4 p-3">
-                 <form method="POST">
-                  <div class="form-row d-flex justify-content-between">
-                    <div class="form-group col-md-6">
-                      <label for="inputEmail4">Email</label>
-                      <input value="<?php echo $userRow["email"] ?>" type="email" class="form-control" name="candidateEmail" id="inputEmail4" placeholder="Email " readonly>
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="inputPassword4">Password</label>
-                      <input value="<?php echo $userRow["password"] ?>" type="password" class="form-control" name="candidatePassword" id="inputPassword4" placeholder="Password">
-                    </div>
+            <?php while($jobAdvertisementRow = mysqli_fetch_assoc($jobAdvertisementRes)){
+              ?>
+              <div class="card text-center">
+                  <div class="card-header text-danger">
+                    <?php echo $jobAdvertisementRow["company_name"] ?>
                   </div>
-                  <div class="form-row d-flex justify-content-between">
-                     <div class="form-group col-md-6 mt-3">
-                      <label for="inputNme4">Name</label>
-                      <input value="<?php echo $candidates["first_name"] ?>" type="text" class="form-control" name="candidateName" id="inputNme4" placeholder="Name">
-                    </div>
-                    <div class="form-group col-md-6 mt-3">
-                      <label for="inputSurname4">Surname</label>
-                      <input value="<?php echo $candidates["last_name"] ?>" type="text" class="form-control" name="candidateSurname" id="inputSurname4" placeholder="Surname">
-                    </div>
+                  <div class="card-body">
+                    <h5 class="card-title"><?php echo $jobAdvertisementRow["title"] ?></h5>
+                    <p class="card-text mt-2"><?php echo "( ".$jobAdvertisementRow["city_name"]." )" ?></p>
+                    <p class="card-text mt-2"><?php echo $jobAdvertisementRow["job_feature"] ?></p>
+                    <p class="card-text mt-2"><?php echo $jobAdvertisementRow["job_type"] ?></p>
+                    <p class="card-text mt-2"><?php echo $jobAdvertisementRow["min_salary"]."₺ <---> ".$jobAdvertisementRow["max_salary"]."₺" ?></p>
+                    <p class="card-text mt-2"><?php echo $jobAdvertisementRow["description"] ?></p>
+                    <form method="POST">
+                      <button type="submit" name="applyJobSubmit" class="btn btn-outline-primary">Apply</button>
+                    </form>
                   </div>
-                   
-                    <div class="form-group col-md-6 mt-3">
-                      <label for="inputIdentity4">Identity Number</label>
-                      <input value="<?php echo $candidates["identity_number"]; ?>" class="form-control" id="inputIdentity4" type="text" placeholder="identity" readonly>
-                    </div>
-                    <div class="form-group col-md-6 mt-3">
-                      <label for="inputCity">Birth Date</label>
-                      <input value="<?php echo $candidates["birth_date"]; ?>" type="date" name="candidateBirthday" class="form-control" id="inputBirthday" readonly>
-                    </div>
-                    <div class="form-group col-md-6 mt-3">
-                      <img src="<?php echo "photos/".$userPhoto ?>" alt="..." class="img-thumbnail w-50">
-                      <div class="custom-file mt-2">
-                        <input type="file" class="custom-file-input" id="inputPhoto" name="inputPhoto">
-                      </div>
-                    </div>
-                  
-                  <button type="submit" id="profileSubmit" name="profileSubmit" class="btn btn-primary mt-3">Save</button>
-                </form>
+                  <div class="card-footer text-muted">
+                     <?php echo "Posted at ".$jobAdvertisementRow["created_date"] ?>
+                  </div>
+                </div>
+
+              <?php
+            }
+            ?>
+                 
           </div>
         </div>
       </div>
     </div>
   
-     <?php
-      if(isset($_POST["profileSubmit"])){
-        $candidatePassword=$_POST["candidatePassword"];
-        $candidateName=$_POST["candidateName"];
-        $candidateSurname=$_POST["candidateSurname"];
-        $candidatePhoto=$_POST["inputPhoto"];
-
-        
-        $res = mysqli_query($db,"UPDATE users SET password = '$candidatePassword' WHERE id = '$id'");
-        $res = mysqli_query($db,"UPDATE candidates SET first_name = '$candidateName', last_name='$candidateSurname',photo='$candidatePhoto' WHERE id = '$id'");
-      }
-         ?>
-
-
 
 
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
+<?php
+    if(isset($_POST["applyJobSubmit"])){
+
+      $checkApply = mysqli_query($db,"SELECT * FROM applied_job WHERE user_id='$id' AND job_adv_id='$advertisementId'");  
+      $checkApply1=mysqli_num_rows($checkApply);
+
+
+      if($checkApply1==1){
+        ?>
+        <script>
+           window.onload=function(){
+            alert("Bu iş ilanına zaten başvuru yaptınız");
+           }
+        </script>
+        <?php
+      }else{
+      $applyJob = mysqli_query($db,"INSERT INTO applied_job (user_id,job_adv_id) VALUES ('$id','$advertisementId')");  
+      ?>
+        <script>
+           window.onload=function(){
+            alert("Başvuru başarılı");
+           }
+        </script>
+      <?php
+      }
+    }
+?>
 
 </body>
 </html>

@@ -72,6 +72,9 @@
                 $row = mysqli_fetch_assoc($res);
                 $counter = 0;
                 
+
+                //gets GET method
+                $companyId=$_GET["companyId"];
                 ?>
                   <div class="col-3">
                     <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
@@ -113,66 +116,122 @@
                   </div>
                   </div>
               
+                  <?php 
+                    //gets company
+                $companyRes = mysqli_query($db,"SELECT * FROM employers WHERE id='$companyId'");
+                $companyRow = mysqli_fetch_assoc($companyRes);
+                  ?>
+
         <div class="col-9">
           <div class="container mt-4 mb-4 p-3">
-                 <form method="POST">
-                  <div class="form-row d-flex justify-content-between">
-                    <div class="form-group col-md-6">
-                      <label for="inputEmail4">Email</label>
-                      <input value="<?php echo $userRow["email"] ?>" type="email" class="form-control" name="candidateEmail" id="inputEmail4" placeholder="Email " readonly>
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="inputPassword4">Password</label>
-                      <input value="<?php echo $userRow["password"] ?>" type="password" class="form-control" name="candidatePassword" id="inputPassword4" placeholder="Password">
-                    </div>
+              <!--Information Card Start -->
+                  <div class="card text-center">
+                  <div class="card-header">
+                    Information
                   </div>
-                  <div class="form-row d-flex justify-content-between">
-                     <div class="form-group col-md-6 mt-3">
-                      <label for="inputNme4">Name</label>
-                      <input value="<?php echo $candidates["first_name"] ?>" type="text" class="form-control" name="candidateName" id="inputNme4" placeholder="Name">
-                    </div>
-                    <div class="form-group col-md-6 mt-3">
-                      <label for="inputSurname4">Surname</label>
-                      <input value="<?php echo $candidates["last_name"] ?>" type="text" class="form-control" name="candidateSurname" id="inputSurname4" placeholder="Surname">
-                    </div>
+                  <div class="card-body">
+                    <img class="card-img-top" src="<?php echo "photos/".$companyRow["company_logo"] ?>" alt="Card image cap" style="width:200px;height:200px;">
+                    <h5 class="card-title text-primary my-3"><?php echo $companyRow["company_name"] ?></h5>
+                    <p class="card-text mt-2"><?php echo $companyRow["phone_number"] ?></p>
+                    <a href="<?php echo $companyRow["web_adress"] ?>" class="btn btn-primary">Go Website</a>
                   </div>
-                   
-                    <div class="form-group col-md-6 mt-3">
-                      <label for="inputIdentity4">Identity Number</label>
-                      <input value="<?php echo $candidates["identity_number"]; ?>" class="form-control" id="inputIdentity4" type="text" placeholder="identity" readonly>
-                    </div>
-                    <div class="form-group col-md-6 mt-3">
-                      <label for="inputCity">Birth Date</label>
-                      <input value="<?php echo $candidates["birth_date"]; ?>" type="date" name="candidateBirthday" class="form-control" id="inputBirthday" readonly>
-                    </div>
-                    <div class="form-group col-md-6 mt-3">
-                      <img src="<?php echo "photos/".$userPhoto ?>" alt="..." class="img-thumbnail w-50">
-                      <div class="custom-file mt-2">
-                        <input type="file" class="custom-file-input" id="inputPhoto" name="inputPhoto">
+                </div>
+              <!--Information Card End -->
+
+              <?php 
+              $jobAdvertisementRes = mysqli_query($db,"SELECT job_advertisements.id,job_advertisements.description,job_advertisements.min_salary,job_advertisements.max_salary,job_advertisements.created_date,job_advertisements.job_feature,job_advertisements.job_type,cities.city_name,job_titles.title FROM job_advertisements JOIN cities ON cities.id=job_advertisements.city_id JOIN job_titles ON job_titles.id=job_advertisements.job_title_id WHERE job_advertisements.employer_id=$companyId AND job_advertisements.is_active=1");
+              $jobAdvertisementRes1=mysqli_num_rows($jobAdvertisementRes);              
+              ?>
+
+              <!-- Advertisements Card Start -->
+                  <div class="card text-center mt-4 ">
+                  <div class="card-header">
+                    Job Advertisements
+                  </div>
+                  <?php
+                  if($jobAdvertisementRes1!=0){
+                    ?>
+                     <div class="card-body d-flex flex-wrap justify-content-center">
+                    <!-- advertisement card start -->
+                    <?php
+                    while($jobAdvertisementRow = mysqli_fetch_assoc($jobAdvertisementRes)){
+                      ?>
+                    <a href="./jobAdvertisementDetail.php?advertisementId=<?php echo$jobAdvertisementRow["id"] ?>" style="text-decoration:none;" class="m-1">
+                      <div class="card text-white bg-dark " style="width: 18rem;">
+                      <div class="card-header"><?php echo $jobAdvertisementRow["city_name"] ?></div>
+                      <div class="card-body">
+                        <h5 class="card-title"><?php echo $jobAdvertisementRow["title"] ?></h5>
+                        <h6 class="card-title"><?php echo $jobAdvertisementRow["job_feature"] ?></h6>
+                        <h6 class="card-title"><?php echo $jobAdvertisementRow["job_type"] ?></h6>
+                        <p class="card-text"><?php echo "📅 ".$jobAdvertisementRow["created_date"]." 📅" ?></p>
                       </div>
                     </div>
-                  
-                  <button type="submit" id="profileSubmit" name="profileSubmit" class="btn btn-primary mt-3">Save</button>
-                </form>
+                    </a>
+                      <?php
+                    }
+                    ?>
+                    
+                    <!-- advertisement card end -->
+                  </div>
+                    <?php
+                  }else{
+                    ?>
+                    <h5 class="m-5 text-danger">There is no any job advertisement for  <?php echo $companyRow["company_name"] ?></h5>
+                    <?php
+                  }
+                  ?>
+                 
+                </div>
+              <!-- Advertisements Card End -->
+
+              
+                
+              <?php 
+              $companyBlogRes = mysqli_query($db,"SELECT * FROM blogs WHERE employer_id=$companyId");
+              $companyBlogRes1=mysqli_num_rows($companyBlogRes);
+              ?>
+              <!-- Blogs Card Start -->
+                  <div class="card text-center mt-4">
+                  <div class="card-header">
+                    Blogs
+                  </div>
+                  <?php
+                  if($companyBlogRes1!=0){
+                    ?>
+                    <div class="card-body d-flex flex-wrap justify-content-center">
+                    <?php
+                    while($companyBlogRow = mysqli_fetch_assoc($companyBlogRes)){
+                      ?>
+                    <a href="./blogDetail.php?blogId=<?php echo$companyBlogRow["id"] ?>" class="mx-2 text-dark mb-3" style="text-decoration:none;">
+                     <div class="card" style="width: 16em;">
+                        <img class="card-img-top" src="photos/<?php echo $companyBlogRow["blog_image"] ?>" alt="Blog image cap">
+                        <div class="card-body">
+                          <h5 class="card-title"><?php echo $companyBlogRow["blog_tittle"] ?></h5>
+                          <p class="card-text"><?php echo substr($companyBlogRow["blog_text"],0,110)."..." ?></p>
+                        </div>
+                      </div>
+                   </a>
+                      <?php
+                    }
+                    ?>
+                   
+                   
+                  </div>
+                    <?php
+                  }else{
+                    ?>
+                    <h5 class="m-5 text-danger">There is no any blog post for  <?php echo $companyRow["company_name"] ?></h5>
+                    <?php
+                  }
+                  ?>
+                </div>
+              <!-- Blogs Card End -->
           </div>
         </div>
       </div>
     </div>
   
-     <?php
-      if(isset($_POST["profileSubmit"])){
-        $candidatePassword=$_POST["candidatePassword"];
-        $candidateName=$_POST["candidateName"];
-        $candidateSurname=$_POST["candidateSurname"];
-        $candidatePhoto=$_POST["inputPhoto"];
-
-        
-        $res = mysqli_query($db,"UPDATE users SET password = '$candidatePassword' WHERE id = '$id'");
-        $res = mysqli_query($db,"UPDATE candidates SET first_name = '$candidateName', last_name='$candidateSurname',photo='$candidatePhoto' WHERE id = '$id'");
-      }
-         ?>
-
-
+    
 
 
 

@@ -28,17 +28,17 @@
 
    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
        <div class="container">
-            <a class="navbar-brand" href="#">Career.net</a>
+            <a class="navbar-brand" href="http://localhost/veritabani/mainPage.php">Career.net</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                   <ul class="navbar-nav">
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Jobs</a>
+                      <a class="nav-link" href="http://localhost/veritabani/jobAdvertisements.php">Jobs</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Companies</a>
+                      <a class="nav-link" href="http://localhost/veritabani/companies.php">Companies</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="http://localhost/veritabani/profile.php">Profile</a>
@@ -132,7 +132,7 @@
           <div class="container mt-4 mb-4 p-3">
             
                         <?php
-                        $experienceRes = mysqli_query($db,"SELECT resume_experience.workplace_name,resume_experience.explanation, resume_experience.started_date, resume_experience.end_date,resume_experience.is_going,job_titles.title FROM job_titles INNER JOIN resume_experience ON resume_experience.position_id=job_titles.id WHERE resume_experience.resume_id=$id");
+                        $experienceRes = mysqli_query($db,"SELECT resume_experience.workplace_name,resume_experience.explanation, resume_experience.started_date, resume_experience.end_date,resume_experience.is_going,job_titles.title FROM job_titles INNER JOIN resume_experience ON resume_experience.position_id=job_titles.id WHERE resume_experience.resume_id=$resumeId");
 
                         $positionsRes = mysqli_query($db,"SELECT * FROM job_titles");
                         ?>
@@ -234,7 +234,7 @@
 
 
                       <?php
-                        $schoolRes = mysqli_query($db,"SELECT * FROM resume_schools WHERE resume_id=$id");
+                        $schoolRes = mysqli_query($db,"SELECT * FROM resume_schools WHERE resume_id=$resumeId");
                         ?>
                       <!-- Resume Schools Start -->
                       <div class="resume_schools my-5">
@@ -350,7 +350,7 @@
 
 
                       <?php 
-                        $techsRes = mysqli_query($db,"SELECT resume_techs.tech_level,techs.tech_name,techs.id FROM techs INNER JOIN resume_techs ON resume_techs.tech_id=techs.id WHERE resume_techs.resume_id=$id");
+                        $techsRes = mysqli_query($db,"SELECT resume_techs.tech_level,techs.tech_name,techs.id FROM techs INNER JOIN resume_techs ON resume_techs.tech_id=techs.id WHERE resume_techs.resume_id=$resumeId");
                       ?>
                       <?php
                         $allTechsRes = mysqli_query($db,"SELECT * FROM techs");
@@ -434,7 +434,7 @@
 
 
                       <?php
-                        $languageRes = mysqli_query($db,"SELECT resume_language.language_level, languages.language_name FROM languages INNER JOIN resume_language ON resume_language.language_id=languages.id WHERE resume_language.resume_id='$id'");
+                        $languageRes = mysqli_query($db,"SELECT resume_language.language_level, languages.language_name FROM languages INNER JOIN resume_language ON resume_language.language_id=languages.id WHERE resume_language.resume_id='$resumeId'");
                       ?>
                        <?php
                         $allLangRes = mysqli_query($db,"SELECT * FROM languages");
@@ -643,7 +643,7 @@
       }
       }
   ?>
-  
+
         <!-- Resume Technology Submit -->
   <?php
       if(isset($_POST["resumeTechnologySubmit"])){

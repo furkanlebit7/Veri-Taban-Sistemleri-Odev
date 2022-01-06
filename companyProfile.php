@@ -20,17 +20,17 @@
 
    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
        <div class="container">
-            <a class="navbar-brand" href="#">Career.net</a>
+            <a class="navbar-brand" href="http://localhost/veritabani/mainPage.php">Career.net</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                   <ul class="navbar-nav">
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Jobs</a>
+                      <a class="nav-link" href="http://localhost/veritabani/jobAdvertisements.php">Jobs</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Companies</a>
+                      <a class="nav-link" href="http://localhost/veritabani/companies.php">Companies</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="http://localhost/veritabani/profile.php">Profile</a>

@@ -115,64 +115,50 @@
               
         <div class="col-9">
           <div class="container mt-4 mb-4 p-3">
-                 <form method="POST">
-                  <div class="form-row d-flex justify-content-between">
-                    <div class="form-group col-md-6">
-                      <label for="inputEmail4">Email</label>
-                      <input value="<?php echo $userRow["email"] ?>" type="email" class="form-control" name="candidateEmail" id="inputEmail4" placeholder="Email " readonly>
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="inputPassword4">Password</label>
-                      <input value="<?php echo $userRow["password"] ?>" type="password" class="form-control" name="candidatePassword" id="inputPassword4" placeholder="Password">
-                    </div>
-                  </div>
-                  <div class="form-row d-flex justify-content-between">
-                     <div class="form-group col-md-6 mt-3">
-                      <label for="inputNme4">Name</label>
-                      <input value="<?php echo $candidates["first_name"] ?>" type="text" class="form-control" name="candidateName" id="inputNme4" placeholder="Name">
-                    </div>
-                    <div class="form-group col-md-6 mt-3">
-                      <label for="inputSurname4">Surname</label>
-                      <input value="<?php echo $candidates["last_name"] ?>" type="text" class="form-control" name="candidateSurname" id="inputSurname4" placeholder="Surname">
-                    </div>
-                  </div>
-                   
-                    <div class="form-group col-md-6 mt-3">
-                      <label for="inputIdentity4">Identity Number</label>
-                      <input value="<?php echo $candidates["identity_number"]; ?>" class="form-control" id="inputIdentity4" type="text" placeholder="identity" readonly>
-                    </div>
-                    <div class="form-group col-md-6 mt-3">
-                      <label for="inputCity">Birth Date</label>
-                      <input value="<?php echo $candidates["birth_date"]; ?>" type="date" name="candidateBirthday" class="form-control" id="inputBirthday" readonly>
-                    </div>
-                    <div class="form-group col-md-6 mt-3">
-                      <img src="<?php echo "photos/".$userPhoto ?>" alt="..." class="img-thumbnail w-50">
-                      <div class="custom-file mt-2">
-                        <input type="file" class="custom-file-input" id="inputPhoto" name="inputPhoto">
+              <div class="cards d-flex flex-wrap">
+                    <?php
+                    //gets resume
+                $jobAdvertisementsRes = mysqli_query($db,"SELECT job_advertisements.id,job_advertisements.description,job_advertisements.min_salary,job_advertisements.max_salary,job_advertisements.created_date,job_advertisements.job_feature,job_advertisements.job_type,cities.city_name,job_titles.title,employers.company_name FROM job_advertisements JOIN cities ON cities.id=job_advertisements.city_id JOIN employers ON employers.id=job_advertisements.employer_id JOIN job_titles ON job_titles.id=job_advertisements.job_title_id WHERE job_advertisements.is_active='1'");  
+                $jobAdvertisementsRes1=mysqli_num_rows($jobAdvertisementsRes);
+                $colorCounter=0;
+                
+                while($jobAdvertisementsRow = mysqli_fetch_assoc($jobAdvertisementsRes)){
+                    ?>
+                   <a href="./jobAdvertisementDetail.php?advertisementId=<?php echo$jobAdvertisementsRow["id"] ?>" style="text-decoration:none;" class="m-1">
+                      <div class="card text-white <?php
+                       if($colorCounter%6==0){echo "bg-primary";}
+                       if($colorCounter%6==1) {echo "bg-secondary";}
+                       if($colorCounter%6==2) {echo "bg-success";}
+                       if($colorCounter%6==3) {echo "bg-danger";}
+                       if($colorCounter%6==4) {echo "bg-warning";}
+                       if($colorCounter%6==5) {echo "bg-info";}
+                       if($colorCounter%6==6) {echo "bg-dark";}
+                       ?>" style="width: 18rem;">
+                      <div class="card-header"><?php echo $jobAdvertisementsRow["company_name"] ?></div>
+                      <div class="card-body">
+                        <h5 class="card-title"><?php echo $jobAdvertisementsRow["title"] ?></h5>
+                        <p class="card-title"><?php echo "( ".$jobAdvertisementsRow["city_name"]." )" ?></p>
+                        <p class="card-title"><?php echo $jobAdvertisementsRow["job_feature"] ?></p>
+                        <p class="card-title"><?php echo $jobAdvertisementsRow["job_type"] ?></p>
+                        <p class="card-text"><?php echo $jobAdvertisementsRow["min_salary"]."₺ <---> ".$jobAdvertisementsRow["max_salary"]."₺" ?></p>
                       </div>
+                      <div class="card-footer text-center">
+                          <small class="text-white"><?php echo "📅 ".$jobAdvertisementsRow["created_date"]." 📅" ?></small>
+                        </div>
                     </div>
-                  
-                  <button type="submit" id="profileSubmit" name="profileSubmit" class="btn btn-primary mt-3">Save</button>
-                </form>
+                    </a>
+                    <?php
+                    $colorCounter++;
+                }
+                    ?>
+
+            </div>
           </div>
         </div>
       </div>
     </div>
   
-     <?php
-      if(isset($_POST["profileSubmit"])){
-        $candidatePassword=$_POST["candidatePassword"];
-        $candidateName=$_POST["candidateName"];
-        $candidateSurname=$_POST["candidateSurname"];
-        $candidatePhoto=$_POST["inputPhoto"];
-
-        
-        $res = mysqli_query($db,"UPDATE users SET password = '$candidatePassword' WHERE id = '$id'");
-        $res = mysqli_query($db,"UPDATE candidates SET first_name = '$candidateName', last_name='$candidateSurname',photo='$candidatePhoto' WHERE id = '$id'");
-      }
-         ?>
-
-
+    
 
 
 
