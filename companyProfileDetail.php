@@ -33,6 +33,9 @@
                       <a class="nav-link" href="http://localhost/veritabani/companies.php">Companies</a>
                     </li>
                     <li class="nav-item">
+                      <a class="nav-link" href="http://localhost/veritabani/blogs.php">Blogs</a>
+                    </li>
+                    <li class="nav-item">
                       <a class="nav-link" href="http://localhost/veritabani/profile.php">Profile</a>
                     </li>
                     <li class="nav-item">

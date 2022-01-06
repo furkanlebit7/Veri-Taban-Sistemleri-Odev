@@ -120,21 +120,37 @@
           <div class="container mt-4 mb-4 p-3">
               <div class="cards d-flex flex-wrap">
                     <?php
-                    //gets resume
-                $companiesRes = mysqli_query($db,"SELECT * FROM employers");   
-                $companiesRes1=mysqli_num_rows($companiesRes);
+                  $companyBlogRes = mysqli_query($db,"SELECT blogs.id,blogs.blog_text,blogs.blog_tittle,blogs.post_date,blogs.blog_image,employers.company_name FROM blogs JOIN employers ON blogs.employer_id=employers.id");
+                  $colorCounter=0;
                 
-                while($companiesRow = mysqli_fetch_assoc($companiesRes)){
+                while($companyBlogRow = mysqli_fetch_assoc($companyBlogRes)){
                     ?>
-                    <div class="card text-center align-items-center mb-4 p-3" style="width: 18rem; margin-right:20px;">
-                      <img class="card-img-top" src="<?php echo "photos/".$companiesRow["company_logo"] ?>" alt="Comany Logo" style="width:150px;height:120px;">
-                      <div class="card-body ">
-                        <h4 class="card-title text-danger"><?php echo $companiesRow["company_name"] ?></h4>
-                        <p class="text-secondary"><u><?php echo $companiesRow["phone_number"] ?></u></p>
-                        <a href="./companyProfileDetail.php?companyId=<?php echo$companiesRow["id"] ?>" class="btn btn-dark">Profile</a>
+                   <a href="./blogDetail.php?blogId=<?php echo$companyBlogRow["id"] ?>" style="text-decoration:none;" class="m-1 mb-3">
+                   
+                      <div class="card text-dark text-center <?php
+                         if($colorCounter%6==0){echo "border-primary";}
+                         if($colorCounter%6==1) {echo "border-secondary";}
+                         if($colorCounter%6==2) {echo "border-success";}
+                         if($colorCounter%6==3) {echo "border-danger";}
+                         if($colorCounter%6==4) {echo "border-warning";}
+                         if($colorCounter%6==5) {echo "border-info";}
+                         if($colorCounter%6==6) {echo "border-dark";}
+                         ?>" style="width: 17rem;">
+                        <img class="card-img-top" src="photos/<?php echo $companyBlogRow["blog_image"] ?>" alt="Blog image cap">
+                        <div class="card-header"><strong><?php echo $companyBlogRow["company_name"] ?></strong></div>
+                        
+                        <div class="card-body">
+                          <h5 class="card-title"><?php echo $companyBlogRow["blog_tittle"] ?></h5>
+                          <p class="card-text"><?php echo substr($companyBlogRow["blog_text"],0,120 )."..." ?></p>
+
+                        </div>
+                          <div class="card-footer text-center">
+                            <small class="text-dark"><?php echo "📅 ".$companyBlogRow["post_date"]." 📅" ?></small>
+                          </div>
                       </div>
-                    </div>
+                    </a>
                     <?php
+                    $colorCounter++;
                 }
                     ?>
 
