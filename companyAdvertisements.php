@@ -178,12 +178,18 @@
         }
         ?>
               
-        <div class="col-9">
+        
+          <?php
+          $citiesRes = mysqli_query($db,"SELECT * FROM cities");
+          $jobTitlesRes = mysqli_query($db,"SELECT * FROM job_titles");
           
+          ?>
+
+        <div class="col-9">
           <div class="container mt-4 mb-4 p-3">
             <!-- Button trigger modal -->
                           <button type="button" class="btn btn-warning mb-2 col-4 text-light" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-                            Write Blog
+                            Add Advertisement
                           </button>
 
                           <!-- Modal -->
@@ -191,29 +197,77 @@
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLabel2">Write Blog</h5>
+                                  <h5 class="modal-title" id="exampleModalLabel2">Add Advertisement</h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                  <form method="POST">
-                                   <!-- Blog Title -->
-                                    <div class="form-group">
-                                      <label for="companyBlogTitle" class="col-form-label">Blog Title</label>
-                                      <input type="text" name="companyBlogTitle"  placeholder="Blog Title here" class="form-control" id="companyBlogTitle">
-                                      <p class="text-danger"><small id="companyBlogTitleError"></small></p>
+                                   <!-- Advertisement Position -->
+                                    <div class="form-group  mt-2 mb-3">
+                                      <label for="companyAdvertisementPosition">Position</label>
+                                      <select name="companyAdvertisementPosition" id="companyAdvertisementPosition" class="form-control">
+                                        <?php
+                                        while($jobTitlesRow=mysqli_fetch_assoc($jobTitlesRes)){
+                                          ?>
+                                          <option value="<?php echo $jobTitlesRow["id"] ?>" ><?php echo $jobTitlesRow["title"] ?></option>
+                                          <?php
+                                        }
+                                        ?>
+                                        
+                                      </select>
                                     </div>
-                                    <!-- Blog Text -->
-                                    <div class="form-group">
-                                      <label for="companyBlogText" class="col-form-label">Blog Text</label>
-                                      <textarea type="text" name="companyBlogText"  placeholder="Blog Text here" class="form-control" id="companyBlogText"></textarea>
-                                      <p class="text-danger"><small id="companyBlogTextError"></small></p>
+                                    <!-- Advertisement City -->
+                                    <div class="form-group  mt-2 mb-3">
+                                      <label for="companyAdvertisementCity">City</label>
+                                      <select name="companyAdvertisementCity" id="companyAdvertisementCity" class="form-control">
+                                        <?php
+                                        while($citiesRow=mysqli_fetch_assoc($citiesRes)){
+                                          ?>
+                                          <option value="<?php echo $citiesRow["id"] ?>" ><?php echo $citiesRow["city_name"] ?></option>
+                                          <?php
+                                        }
+                                        ?>
+                                        
+                                      </select>
                                     </div>
-                                   <!-- Blog Image -->
+                                    <!-- Advertisement Feature -->
+                                    <div class="form-group  mt-2 mb-3">
+                                      <label for="companyAdvertisementFeature">Feature</label>
+                                      <select name="companyAdvertisementFeature" id="companyAdvertisementFeature" class="form-control">
+                                          <option value="Normal" >Normal</option>
+                                          <option value="Remote" >Remote</option>
+                                          <option value="Hybrid" >Hybrid</option>
+                                      </select>
+                                    </div>
+                                    <!-- Advertisement Type -->
+                                    <div class="form-group  mt-2 mb-3">
+                                      <label for="companyAdvertisementType">Feature</label>
+                                      <select name="companyAdvertisementType" id="companyAdvertisementType" class="form-control">
+                                          <option value="Full Time" >Full Time</option>
+                                          <option value="Part Time" >Part Time</option>
+                                          <option value="Internship" >Internship</option>
+                                          <option value="Seasonal" >Seasonal</option>
+                                      </select>
+                                    </div>
+                                    
+                                   <!-- Advertisement Min Salary -->
+                                   <div class="d-flex justify-content-between">
                                     <div class="form-group" id="resumeSchoolEndDateForm">
-                                      <label for="resumeBlogImage"  class="col-form-label">Blog Image</label>
-                                      <input type="file" class="form-control" id="resumeBlogImage"  name="resumeBlogImage" >
-                                      <p class="text-danger"><small id="resumeBlogImageError"></small></p>
+                                      <label for="companyAdvertisementMinSalary"  class="col-form-label">Min Salary</label>
+                                      <input type="number" class="form-control" id="companyAdvertisementMinSalary"  name="companyAdvertisementMinSalary" >
                                     </div>
+                                    <div class="form-group" id="resumeSchoolEndDateForm">
+                                      <label for="companyAdvertisementMaxSalary"  class="col-form-label">Max Salary</label>
+                                      <input type="number" class="form-control" id="companyAdvertisementMaxSalary"  name="companyAdvertisementMaxSalary" >
+                                    </div>
+                                      </div>
+                                    <!-- Advertisement Description -->
+                                    <div class="form-group">
+                                      <label for="companyAdvertisementDescription" class="col-form-label">Description</label>
+                                      <textarea type="text" name="companyAdvertisementDescription"  placeholder="Advertisement description here" class="form-control" id="companyAdvertisementDescription"></textarea>
+                                      <p class="text-danger"><small id="companyAdvertisementDescriptionError"></small></p>
+                                    </div>
+
                                     <div class="modal-footer">
                                       <button type="submit" class="btn btn-primary" name="companyBlogSubmit" id="companyBlogSubmit" >Post</button>
                                     </div>
