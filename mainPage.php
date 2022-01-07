@@ -154,8 +154,6 @@
                 }else{
                   $userPhoto="user.svg";
                 }
-
-                
                 ?>
         <div class="col-3">
           <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
@@ -171,8 +169,6 @@
         <?php
         }
         ?>
-                
-
              
 
                  
