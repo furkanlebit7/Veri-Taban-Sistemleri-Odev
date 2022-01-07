@@ -62,6 +62,12 @@
                     <li class="nav-item">
                       <a class="nav-link" href="http://localhost/veritabani/companyProfile.php">Profile</a>
                     </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="http://localhost/veritabani/companyBlogs.php">My Blog</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="http://localhost/veritabani/companyAdvertisements.php">My Advertisements</a>
+                    </li>
                       <?php
                     }
                     ?>

@@ -179,24 +179,83 @@
         ?>
               
         <div class="col-9">
+          
           <div class="container mt-4 mb-4 p-3">
+            <!-- Button trigger modal -->
+                          <button type="button" class="btn btn-warning mb-2 col-4 text-light" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                            Write Blog
+                          </button>
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel2">Write Blog</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                 <form method="POST">
+                                   <!-- Blog Title -->
+                                    <div class="form-group">
+                                      <label for="companyBlogTitle" class="col-form-label">Blog Title</label>
+                                      <input type="text" name="companyBlogTitle"  placeholder="Blog Title here" class="form-control" id="companyBlogTitle">
+                                      <p class="text-danger"><small id="companyBlogTitleError"></small></p>
+                                    </div>
+                                    <!-- Blog Text -->
+                                    <div class="form-group">
+                                      <label for="companyBlogText" class="col-form-label">Blog Text</label>
+                                      <textarea type="text" name="companyBlogText"  placeholder="Blog Text here" class="form-control" id="companyBlogText"></textarea>
+                                      <p class="text-danger"><small id="companyBlogTextError"></small></p>
+                                    </div>
+                                   <!-- Blog Image -->
+                                    <div class="form-group" id="resumeSchoolEndDateForm">
+                                      <label for="resumeBlogImage"  class="col-form-label">Blog Image</label>
+                                      <input type="file" class="form-control" id="resumeBlogImage"  name="resumeBlogImage" >
+                                      <p class="text-danger"><small id="resumeBlogImageError"></small></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="submit" class="btn btn-primary" name="companyBlogSubmit" id="companyBlogSubmit" >Post</button>
+                                    </div>
+                                  </form>
+                                </div>
+                                
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Modal End -->
               <div class="cards d-flex flex-wrap">
                     <?php
-                    //gets resume
-                $companiesRes = mysqli_query($db,"SELECT * FROM employers");   
-                $companiesRes1=mysqli_num_rows($companiesRes);
+                  $companyBlogRes = mysqli_query($db,"SELECT * FROM blogs WHERE employer_id='$id'");
+                  $colorCounter=0;
                 
-                while($companiesRow = mysqli_fetch_assoc($companiesRes)){
+                while($companyBlogRow = mysqli_fetch_assoc($companyBlogRes)){
                     ?>
-                    <div class="card text-center align-items-center mb-4 p-3" style="width: 18rem; margin-right:20px;">
-                      <img class="card-img-top" src="<?php echo "photos/".$companiesRow["company_logo"] ?>" alt="Comany Logo" style="width:150px;height:120px;">
-                      <div class="card-body ">
-                        <h4 class="card-title text-danger"><?php echo $companiesRow["company_name"] ?></h4>
-                        <p class="text-secondary"><u><?php echo $companiesRow["phone_number"] ?></u></p>
-                        <a href="./companyProfileDetail.php?companyId=<?php echo$companiesRow["id"] ?>" class="btn btn-dark">Profile</a>
+                   <a href="./blogDetail.php?blogId=<?php echo$companyBlogRow["id"] ?>" style="text-decoration:none;" class="m-1 mb-3">
+                   
+                      <div class="card text-dark text-center <?php
+                         if($colorCounter%6==0){echo "border-primary";}
+                         if($colorCounter%6==1) {echo "border-secondary";}
+                         if($colorCounter%6==2) {echo "border-success";}
+                         if($colorCounter%6==3) {echo "border-danger";}
+                         if($colorCounter%6==4) {echo "border-warning";}
+                         if($colorCounter%6==5) {echo "border-info";}
+                         if($colorCounter%6==6) {echo "border-dark";}
+                         ?>" style="width: 17rem;">
+                        <img class="card-img-top" src="photos/<?php echo $companyBlogRow["blog_image"] ?>" alt="Blog image cap">
+                        
+                        <div class="card-body">
+                          <h5 class="card-title"><?php echo $companyBlogRow["blog_tittle"] ?></h5>
+                          <p class="card-text"><?php echo substr($companyBlogRow["blog_text"],0,120 )."..." ?></p>
+
+                        </div>
+                          <div class="card-footer text-center">
+                            <small class="text-dark"><?php echo "📅 ".$companyBlogRow["post_date"]." 📅" ?></small>
+                          </div>
                       </div>
-                    </div>
+                    </a>
                     <?php
+                    $colorCounter++;
                 }
                     ?>
 
@@ -205,6 +264,39 @@
         </div>
       </div>
     </div>
+
+
+    <script>
+      const companyBlogSubmit = document.querySelector("#companyBlogSubmit");
+      
+      const companyBlogTitle = document.querySelector("#companyBlogTitle");
+      const companyBlogText = document.querySelector("#companyBlogText");
+      const resumeBlogImage = document.querySelector("#resumeBlogImage");
+
+      const companyBlogTitleError = document.querySelector("#companyBlogTitleError");
+      const companyBlogTextError = document.querySelector("#companyBlogTextError");
+      const resumeBlogImageError = document.querySelector("#resumeBlogImageError");
+
+      
+      companyBlogSubmit.addEventListener("click",((e)=>{
+
+        companyBlogTitleError.innerHTML="";
+        companyBlogTextError.innerHTML="";
+        resumeBlogImageError.innerHTML="";
+
+        if(companyBlogTitle.value=="" || companyBlogTitle.value.length<16){
+          e.preventDefault();
+          companyBlogTitleError.innerHTML="Blog başlığı 16 karakterden az olamaz";
+        }else if(companyBlogText.value=="" || companyBlogText.value.length<50){
+          e.preventDefault();
+          companyBlogTextError.innerHTML="Blog içeriği 50 karakterden az olamaz";
+        }else if(!resumeBlogImage || resumeBlogImage.value==""){
+          e.preventDefault();
+          resumeBlogImageError.innerHTML="Lütfen bir fotoğraf seçiniz";
+        }
+      }))
+
+    </script>
   
     
 
@@ -212,6 +304,18 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
+  <?php
+      if(isset($_POST["companyBlogSubmit"])){
+      $companyBlogTitle=$_POST["companyBlogTitle"];
+      $companyBlogText=$_POST["companyBlogText"];
+      $resumeBlogImage=$_POST["resumeBlogImage"];
+
+      $date = date("Y.m.d");
+        
+         $addBlog = mysqli_query($db,"INSERT INTO blogs (employer_id, blog_text, blog_image,blog_tittle,post_date) VALUES ('$id','$companyBlogText','$resumeBlogImage','$companyBlogTitle','$date')"); 
+      }
+  ?>
 
 </body>
 </html>
