@@ -26,6 +26,9 @@
             </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                   <ul class="navbar-nav">
+                    <?php
+                    if($_SESSION["userType"]==0){
+                      ?>  
                     <li class="nav-item">
                       <a class="nav-link" href="http://localhost/veritabani/jobAdvertisements.php">Jobs</a>
                     </li>
@@ -44,6 +47,24 @@
                     <li class="nav-item">
                       <a class="nav-link" href="http://localhost/veritabani/resume.php">Resume</a>
                     </li>
+                      <?php
+                    }else{
+                      ?>
+                    <li class="nav-item">
+                      <a class="nav-link" href="http://localhost/veritabani/jobAdvertisements.php">Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="http://localhost/veritabani/companies.php">Companies</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="http://localhost/veritabani/blogs.php">Blogs</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="http://localhost/veritabani/companyProfile.php">Profile</a>
+                    </li>
+                      <?php
+                    }
+                    ?>
                   </ul>
                 </div>
         </div>
@@ -114,7 +135,7 @@
                       </div>
                    </div>
                   </div>
-                  </div>
+                </div>
               
         <div class="col-9">
           <div class="container mt-4 mb-4 p-3">

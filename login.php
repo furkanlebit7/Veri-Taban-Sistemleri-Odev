@@ -131,11 +131,8 @@
         session_start();
         $_SESSION["userEmail"]=$signInEmail;
         $_SESSION["userId"]=$row["id"];
-        if($row["type"]==0){
-        Header("Location:completeLogin.php");
-        }else{
-        Header("Location:completeCompanyLogin.php");
-        }
+        $_SESSION["userType"]=$row["type"];
+        Header("Location:mainPage.php");
        }else{
          ?>
          <script>

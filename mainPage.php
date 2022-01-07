@@ -26,6 +26,9 @@
             </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                   <ul class="navbar-nav">
+                    <?php
+                    if($_SESSION["userType"]==0){
+                      ?>  
                     <li class="nav-item">
                       <a class="nav-link" href="http://localhost/veritabani/jobAdvertisements.php">Jobs</a>
                     </li>
@@ -44,6 +47,24 @@
                     <li class="nav-item">
                       <a class="nav-link" href="http://localhost/veritabani/resume.php">Resume</a>
                     </li>
+                      <?php
+                    }else{
+                      ?>
+                    <li class="nav-item">
+                      <a class="nav-link" href="http://localhost/veritabani/jobAdvertisements.php">Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="http://localhost/veritabani/companies.php">Companies</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="http://localhost/veritabani/blogs.php">Blogs</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="http://localhost/veritabani/companyProfile.php">Profile</a>
+                    </li>
+                      <?php
+                    }
+                    ?>
                   </ul>
                 </div>
         </div>
@@ -52,7 +73,9 @@
     <div class="container">
       <div class="row">
         <?php 
-                $id = $_SESSION["userId"];
+          $id = $_SESSION["userId"];
+
+        if($_SESSION["userType"]==0){
 
                 //gets user
                 $userRes = mysqli_query($db,"SELECT * FROM users WHERE id='$id'");
@@ -115,6 +138,40 @@
                    </div>
                   </div>
                   </div>
+                  <?php
+        }else{
+          //gets user
+                $userRes = mysqli_query($db,"SELECT * FROM users WHERE id='$id'");
+                $userRes1 = mysqli_num_rows($userRes); 
+                $userRow = mysqli_fetch_assoc($userRes);
+
+                //gets candidate
+                $can = mysqli_query($db,"SELECT * FROM employers WHERE id='$id'");   
+                $can1=mysqli_num_rows($can);
+                $candidates = mysqli_fetch_assoc($can);
+                if($candidates["company_logo"]){
+                  $userPhoto = $candidates["company_logo"];
+                }else{
+                  $userPhoto="user.svg";
+                }
+
+                
+                ?>
+        <div class="col-3">
+          <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
+            <div class="card p-4">     
+              <div class=" image d-flex flex-column justify-content-center align-items-center"> <button class="btn" style="background-color:#212529;"> <img src="photos/<?php echo $userPhoto  ?>" height="100" width="100" /></button> <span class="name mt-3"><?php echo $candidates["company_name"] ?></span>
+              <span class="name mt-3"><?php echo $candidates["phone_number"] ?></span>
+              
+              <a href="<?php echo $candidates["web_adress"] ?>"  type="button" class="btn mt-3 btn-outline-dark">Company Website</a>
+              </div>
+              </div>  
+          </div>
+        </div>
+        <?php
+        }
+        ?>
+                
 
              
 
