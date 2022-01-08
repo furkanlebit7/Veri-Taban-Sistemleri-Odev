@@ -182,7 +182,7 @@
           <div class="container mt-4 mb-4 p-3">
               <div class="cards d-flex flex-wrap">
                     <?php
-                  $companyBlogRes = mysqli_query($db,"SELECT blogs.id,blogs.blog_text,blogs.blog_tittle,blogs.post_date,blogs.blog_image,employers.company_name FROM blogs JOIN employers ON blogs.employer_id=employers.id");
+                  $companyBlogRes = mysqli_query($db,"SELECT blogs.id,blogs.blog_text,blogs.blog_tittle,blogs.post_date,blogs.blog_image,employers.company_name FROM blogs JOIN employers ON blogs.employer_id=employers.id ORDER BY post_date DESC");
                   $colorCounter=0;
                 
                 while($companyBlogRow = mysqli_fetch_assoc($companyBlogRes)){
@@ -198,12 +198,12 @@
                          if($colorCounter%6==5) {echo "border-info";}
                          if($colorCounter%6==6) {echo "border-dark";}
                          ?>" style="width: 17rem;">
-                        <img class="card-img-top" src="photos/<?php echo $companyBlogRow["blog_image"] ?>" alt="Blog image cap">
+                        <img class="card-img-top" src="photos/<?php echo $companyBlogRow["blog_image"] ?>" alt="Blog image cap" style="width:100%;height:150px;">
                         <div class="card-header"><strong><?php echo $companyBlogRow["company_name"] ?></strong></div>
                         
-                        <div class="card-body">
+                        <div class="card-body" style="height: 180px;overflow: hidden;">
                           <h5 class="card-title"><?php echo $companyBlogRow["blog_tittle"] ?></h5>
-                          <p class="card-text"><?php echo substr($companyBlogRow["blog_text"],0,120 )."..." ?></p>
+                          <p class="card-text"><?php echo substr($companyBlogRow["blog_text"],0,50 )."..." ?></p>
 
                         </div>
                           <div class="card-footer text-center">

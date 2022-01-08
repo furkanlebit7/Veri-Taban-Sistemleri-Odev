@@ -188,7 +188,7 @@
         <div class="col-9">
           <div class="container mt-4 mb-4 p-3">
             <!-- Button trigger modal -->
-                          <button type="button" class="btn btn-warning mb-2 col-4 text-light" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                          <button type="button" class="btn btn-success mb-2 col-4 text-light" data-bs-toggle="modal" data-bs-target="#exampleModal2">
                             Add Advertisement
                           </button>
 
@@ -241,7 +241,7 @@
                                     </div>
                                     <!-- Advertisement Type -->
                                     <div class="form-group  mt-2 mb-3">
-                                      <label for="companyAdvertisementType">Feature</label>
+                                      <label for="companyAdvertisementType">Type</label>
                                       <select name="companyAdvertisementType" id="companyAdvertisementType" class="form-control">
                                           <option value="Full Time" >Full Time</option>
                                           <option value="Part Time" >Part Time</option>
@@ -251,15 +251,17 @@
                                     </div>
                                     
                                    <!-- Advertisement Min Salary -->
-                                   <div class="d-flex justify-content-between">
-                                    <div class="form-group" id="resumeSchoolEndDateForm">
+                                   <div class="d-flex flex-wrap justify-content-between">
+                                    <div class="form-group col-5" id="resumeSchoolEndDateForm">
                                       <label for="companyAdvertisementMinSalary"  class="col-form-label">Min Salary</label>
-                                      <input type="number" class="form-control" id="companyAdvertisementMinSalary"  name="companyAdvertisementMinSalary" >
+                                      <input type="number" class="form-control" id="companyAdvertisementMinSalary" min="0" max="99999" name="companyAdvertisementMinSalary" >
                                     </div>
-                                    <div class="form-group" id="resumeSchoolEndDateForm">
+                                    <div class="form-group col-5" id="resumeSchoolEndDateForm">
                                       <label for="companyAdvertisementMaxSalary"  class="col-form-label">Max Salary</label>
-                                      <input type="number" class="form-control" id="companyAdvertisementMaxSalary"  name="companyAdvertisementMaxSalary" >
+                                      <input type="number" class="form-control" id="companyAdvertisementMaxSalary" min="0"  max="99999" name="companyAdvertisementMaxSalary" >
                                     </div>
+                                      <p class="text-danger col-12"><small id="companyAdvertisementSalaryError"></small></p>
+
                                       </div>
                                     <!-- Advertisement Description -->
                                     <div class="form-group">
@@ -269,7 +271,7 @@
                                     </div>
 
                                     <div class="modal-footer">
-                                      <button type="submit" class="btn btn-primary" name="companyBlogSubmit" id="companyBlogSubmit" >Post</button>
+                                      <button type="submit" class="btn btn-primary" name="companyAdvertisementSubmit" id="companyAdvertisementSubmit" >Post</button>
                                     </div>
                                   </form>
                                 </div>
@@ -279,40 +281,64 @@
                           </div>
                           <!-- Modal End -->
               <div class="cards d-flex flex-wrap">
-                    <?php
-                  $companyBlogRes = mysqli_query($db,"SELECT * FROM blogs WHERE employer_id='$id'");
-                  $colorCounter=0;
-                
-                while($companyBlogRow = mysqli_fetch_assoc($companyBlogRes)){
-                    ?>
-                   <a href="./blogDetail.php?blogId=<?php echo$companyBlogRow["id"] ?>" style="text-decoration:none;" class="m-1 mb-3">
-                   
-                      <div class="card text-dark text-center <?php
-                         if($colorCounter%6==0){echo "border-primary";}
-                         if($colorCounter%6==1) {echo "border-secondary";}
-                         if($colorCounter%6==2) {echo "border-success";}
-                         if($colorCounter%6==3) {echo "border-danger";}
-                         if($colorCounter%6==4) {echo "border-warning";}
-                         if($colorCounter%6==5) {echo "border-info";}
-                         if($colorCounter%6==6) {echo "border-dark";}
-                         ?>" style="width: 17rem;">
-                        <img class="card-img-top" src="photos/<?php echo $companyBlogRow["blog_image"] ?>" alt="Blog image cap">
-                        
-                        <div class="card-body">
-                          <h5 class="card-title"><?php echo $companyBlogRow["blog_tittle"] ?></h5>
-                          <p class="card-text"><?php echo substr($companyBlogRow["blog_text"],0,120 )."..." ?></p>
-
-                        </div>
-                          <div class="card-footer text-center">
-                            <small class="text-dark"><?php echo "📅 ".$companyBlogRow["post_date"]." 📅" ?></small>
-                          </div>
+              <?php 
+              $jobAdvertisementRes = mysqli_query($db,"SELECT job_advertisements.id,job_advertisements.is_active,job_advertisements.id,job_advertisements.description,job_advertisements.min_salary,job_advertisements.max_salary,job_advertisements.created_date,job_advertisements.job_feature,job_advertisements.job_type,cities.city_name,job_titles.title FROM job_advertisements JOIN cities ON cities.id=job_advertisements.city_id JOIN job_titles ON job_titles.id=job_advertisements.job_title_id WHERE job_advertisements.employer_id=$id ORDER BY job_advertisements.created_date DESC");
+              $jobAdvertisementRes1=mysqli_num_rows($jobAdvertisementRes);
+              ?>
+              
+              <?php
+                    while($jobAdvertisementRow = mysqli_fetch_assoc($jobAdvertisementRes)){
+                      $job_id=$jobAdvertisementRow["id"];
+                      ?>
+                    <div  style="text-decoration:none;" class="m-1">
+                      <div class="card <?php if($jobAdvertisementRow["is_active"]==1){echo "text-dark";}else{echo "text-muted";} ?> " style="width: 18rem;">
+                      <div class="card-header"><?php echo $jobAdvertisementRow["city_name"] ?></div>
+                      <div class="card-body">
+                        <h5 class="card-title"><?php echo $jobAdvertisementRow["title"] ?></h5>
+                        <h6 class="card-title"><?php echo $jobAdvertisementRow["job_feature"] ?></h6>
+                        <h6 class="card-title"><?php echo $jobAdvertisementRow["job_type"] ?></h6>
+                        <p class="card-text"><?php echo "📅 ".$jobAdvertisementRow["created_date"]." 📅" ?></p>
                       </div>
-                    </a>
-                    <?php
-                    $colorCounter++;
-                }
-                    ?>
+                      <div class="card-footer d-flex justify-content-between align-items-center">
+                        <?php if($jobAdvertisementRow["is_active"]==1){echo "Active";}else{echo "Passive";} ?>
+                        <!-- Advertisement Settings modal -->
+                          <button type="button" class="btn btn-warning text-light " data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $job_id ?>">
+                            <i class="fas fa-cog"></i>
+                          </button>
+                      
+                          <!-- Modal -->
+                          <div class="modal fade" id="exampleModal<?php echo $job_id ?>" tabindex="-1" aria-labelledby="exampleModalLabel<?php echo $job_id ?>" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel<?php echo $job_id ?>">Settings</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body ">
+                                 <form method="POST" class="d-flex justify-content-between">
+                                   <input name="companyAdvertisementSettingsId" value="<?php echo $job_id ?>" class="d-none"/>
+                                   <input name="companyAdvertisementSettingsIsActive" value="<?php echo $jobAdvertisementRow["is_active"] ?>" class="d-none"/>
+                                      <button type="submit" class="btn btn-secondary" name="companyAdvertisementSituationSubmit" id="companyAdvertisementSituationSubmit" >
+                                        <?php if($jobAdvertisementRow["is_active"]==1){echo "Make it Passive";}else{echo "Make it Active";} ?>
+                                      </button>
 
+                                      <button type="submit" class="btn btn-danger" name="companyAdvertisementDeleteSubmit" id="companyAdvertisementDeleteSubmit" >Delete</button>
+
+
+                                      <a class="btn btn-success text-light" href="./jobAdvertisementDetail.php?advertisementId=<?php echo$jobAdvertisementRow["id"] ?>">Go Detail</a>
+                                  </form>
+                                </div>
+                                
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Modal End -->
+                    </div>
+                    </div>
+                    </div>
+                      <?php
+                    }
+                    ?>
             </div>
           </div>
         </div>
@@ -321,32 +347,34 @@
 
 
     <script>
-      const companyBlogSubmit = document.querySelector("#companyBlogSubmit");
+      const companyAdvertisementSubmit = document.querySelector("#companyAdvertisementSubmit");
       
-      const companyBlogTitle = document.querySelector("#companyBlogTitle");
-      const companyBlogText = document.querySelector("#companyBlogText");
-      const resumeBlogImage = document.querySelector("#resumeBlogImage");
+      const companyAdvertisementPosition = document.querySelector("#companyAdvertisementPosition");
+      const companyAdvertisementCity = document.querySelector("#companyAdvertisementCity");
+      const companyAdvertisementFeature = document.querySelector("#companyAdvertisementFeature");
+      const companyAdvertisementType = document.querySelector("#companyAdvertisementType");
+      const companyAdvertisementMinSalary = document.querySelector("#companyAdvertisementMinSalary");
+      const companyAdvertisementMaxSalary = document.querySelector("#companyAdvertisementMaxSalary");
+      const companyAdvertisementDescription = document.querySelector("#companyAdvertisementDescription");
 
-      const companyBlogTitleError = document.querySelector("#companyBlogTitleError");
-      const companyBlogTextError = document.querySelector("#companyBlogTextError");
-      const resumeBlogImageError = document.querySelector("#resumeBlogImageError");
+      const companyAdvertisementSalaryError = document.querySelector("#companyAdvertisementSalaryError");
+      const companyAdvertisementDescriptionError = document.querySelector("#companyAdvertisementDescriptionError");
 
       
-      companyBlogSubmit.addEventListener("click",((e)=>{
+      companyAdvertisementSubmit.addEventListener("click",((e)=>{
 
-        companyBlogTitleError.innerHTML="";
-        companyBlogTextError.innerHTML="";
-        resumeBlogImageError.innerHTML="";
+        companyAdvertisementSalaryError.innerHTML="";
+        companyAdvertisementDescriptionError.innerHTML="";
 
-        if(companyBlogTitle.value=="" || companyBlogTitle.value.length<16){
+        if(companyAdvertisementMinSalary.value>=companyAdvertisementMaxSalary.value){
           e.preventDefault();
-          companyBlogTitleError.innerHTML="Blog başlığı 16 karakterden az olamaz";
-        }else if(companyBlogText.value=="" || companyBlogText.value.length<50){
+          companyAdvertisementSalaryError.innerHTML="Minimum maaş Maximum maaş ile eşit veya daha fazla olamaz";
+        }else if(companyAdvertisementMaxSalary.value<=companyAdvertisementMinSalary.value){
           e.preventDefault();
-          companyBlogTextError.innerHTML="Blog içeriği 50 karakterden az olamaz";
-        }else if(!resumeBlogImage || resumeBlogImage.value==""){
+          companyAdvertisementSalaryError.innerHTML="Maximum maaş Minimum maaş ile eşit veya daha az olamaz";
+        }else if(companyAdvertisementDescription.value.length<=20){
           e.preventDefault();
-          resumeBlogImageError.innerHTML="Lütfen bir fotoğraf seçiniz";
+          companyAdvertisementDescriptionError.innerHTML="İş açıklaması en az 20 karakter olmalıdır";
         }
       }))
 
@@ -360,16 +388,42 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 
   <?php
-      if(isset($_POST["companyBlogSubmit"])){
-      $companyBlogTitle=$_POST["companyBlogTitle"];
-      $companyBlogText=$_POST["companyBlogText"];
-      $resumeBlogImage=$_POST["resumeBlogImage"];
-
-      $date = date("Y.m.d");
+      if(isset($_POST["companyAdvertisementSubmit"])){
+      $companyAdvertisementPosition=$_POST["companyAdvertisementPosition"];
+      $companyAdvertisementCity=$_POST["companyAdvertisementCity"];
+      $companyAdvertisementFeature=$_POST["companyAdvertisementFeature"];
+      $companyAdvertisementType=$_POST["companyAdvertisementType"];
+      $companyAdvertisementMinSalary=$_POST["companyAdvertisementMinSalary"];
+      $companyAdvertisementMaxSalary=$_POST["companyAdvertisementMaxSalary"];
+      $companyAdvertisementDescription=$_POST["companyAdvertisementDescription"];
+       $date = date("Y.m.d");
         
-         $addBlog = mysqli_query($db,"INSERT INTO blogs (employer_id, blog_text, blog_image,blog_tittle,post_date) VALUES ('$id','$companyBlogText','$resumeBlogImage','$companyBlogTitle','$date')"); 
+          $addAdvertisement = mysqli_query($db,"INSERT INTO job_advertisements(employer_id, job_title_id, city_id, description, min_salary, max_salary, is_active, created_date, job_feature, job_type) VALUES ('$id','$companyAdvertisementPosition','$companyAdvertisementCity','$companyAdvertisementDescription','$companyAdvertisementMinSalary','$companyAdvertisementMaxSalary',1,'$date','$companyAdvertisementFeature','$companyAdvertisementType')");
       }
   ?>
+  <?php
+      if(isset($_POST["companyAdvertisementDeleteSubmit"])){
+      $companyAdvertisementSettingsId=$_POST["companyAdvertisementSettingsId"];
+      
+      $deleteAdvertisement = mysqli_query($db,"DELETE FROM job_advertisements WHERE id='$companyAdvertisementSettingsId'");
+      }
+  ?>
+  <?php
+      if(isset($_POST["companyAdvertisementSituationSubmit"])){
+      $companyAdvertisementSettingsId=$_POST["companyAdvertisementSettingsId"];
+      $companyAdvertisementSettingsIsActive=$_POST["companyAdvertisementSettingsIsActive"];
+      
+      if($companyAdvertisementSettingsIsActive==1){
+      $deleteAdvertisement = mysqli_query($db,"UPDATE job_advertisements SET is_active = '0' WHERE id = '$companyAdvertisementSettingsId';");
+      }else{
+      $deleteAdvertisement = mysqli_query($db,"UPDATE job_advertisements SET is_active = '1' WHERE id = '$companyAdvertisementSettingsId';");
+
+      }
+      }
+  ?>
+  
 
 </body>
 </html>
+
+                      

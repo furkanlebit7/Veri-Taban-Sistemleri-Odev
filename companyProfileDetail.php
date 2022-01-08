@@ -233,7 +233,6 @@
                       <?php
                     }
                     ?>
-                    
                     <!-- advertisement card end -->
                   </div>
                     <?php

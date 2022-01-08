@@ -183,7 +183,7 @@
               <div class="cards d-flex flex-wrap">
                     <?php
                     //gets resume
-                $jobAdvertisementsRes = mysqli_query($db,"SELECT job_advertisements.id,job_advertisements.description,job_advertisements.min_salary,job_advertisements.max_salary,job_advertisements.created_date,job_advertisements.job_feature,job_advertisements.job_type,cities.city_name,job_titles.title,employers.company_name FROM job_advertisements JOIN cities ON cities.id=job_advertisements.city_id JOIN employers ON employers.id=job_advertisements.employer_id JOIN job_titles ON job_titles.id=job_advertisements.job_title_id WHERE job_advertisements.is_active='1'");  
+                $jobAdvertisementsRes = mysqli_query($db,"SELECT job_advertisements.id,job_advertisements.description,job_advertisements.min_salary,job_advertisements.max_salary,job_advertisements.created_date,job_advertisements.job_feature,job_advertisements.job_type,cities.city_name,job_titles.title,employers.company_name FROM job_advertisements JOIN cities ON cities.id=job_advertisements.city_id JOIN employers ON employers.id=job_advertisements.employer_id JOIN job_titles ON job_titles.id=job_advertisements.job_title_id WHERE job_advertisements.is_active='1' ORDER BY job_advertisements.created_date DESC");  
                 $jobAdvertisementsRes1=mysqli_num_rows($jobAdvertisementsRes);
                 $colorCounter=0;
                 

@@ -226,7 +226,7 @@
                           <!-- Modal End -->
               <div class="cards d-flex flex-wrap">
                     <?php
-                  $companyBlogRes = mysqli_query($db,"SELECT * FROM blogs WHERE employer_id='$id'");
+                  $companyBlogRes = mysqli_query($db,"SELECT * FROM blogs WHERE employer_id='$id' ORDER BY post_date DESC");
                   $colorCounter=0;
                 
                 while($companyBlogRow = mysqli_fetch_assoc($companyBlogRes)){
@@ -244,9 +244,9 @@
                          ?>" style="width: 17rem;">
                         <img class="card-img-top" src="photos/<?php echo $companyBlogRow["blog_image"] ?>" alt="Blog image cap">
                         
-                        <div class="card-body">
+                       <div class="card-body" style="height: 180px;overflow: hidden;">
                           <h5 class="card-title"><?php echo $companyBlogRow["blog_tittle"] ?></h5>
-                          <p class="card-text"><?php echo substr($companyBlogRow["blog_text"],0,120 )."..." ?></p>
+                          <p class="card-text"><?php echo substr($companyBlogRow["blog_text"],0,50 )."..." ?></p>
 
                         </div>
                           <div class="card-footer text-center">

@@ -156,7 +156,7 @@
           <div class="container mt-4 mb-4 p-3">
             
                         <?php
-                        $experienceRes = mysqli_query($db,"SELECT resume_experience.workplace_name,resume_experience.explanation, resume_experience.started_date, resume_experience.end_date,resume_experience.is_going,job_titles.title FROM job_titles INNER JOIN resume_experience ON resume_experience.position_id=job_titles.id WHERE resume_experience.resume_id=$resumeId");
+                        $experienceRes = mysqli_query($db,"SELECT resume_experience.id,resume_experience.workplace_name,resume_experience.explanation, resume_experience.started_date, resume_experience.end_date,resume_experience.is_going,job_titles.title FROM job_titles INNER JOIN resume_experience ON resume_experience.position_id=job_titles.id WHERE resume_experience.resume_id=$resumeId");
 
                         $positionsRes = mysqli_query($db,"SELECT * FROM job_titles");
                         ?>
@@ -239,7 +239,12 @@
                           ?>
                           <hr>
                           <div class="card">
-                            <h4 class="card-header text-dark"><?php echo $experienceRow["workplace_name"]?></h5>
+                            <h4 class="card-header align-items-center d-flex justify-content-between text-dark"><?php echo $experienceRow["workplace_name"]?>
+                            <form method="POST">
+                              <input class="d-none" name="resumeExperienceDeleteId" value="<?php echo $experienceRow["id"] ?>" />
+                              <button type="submit" name="resumeExperienceDeleteSubmit" class="btn btn-danger">X</button>
+                            </form>
+                          </h4>
                             <div class="card-body">
                               <h6 class="card-title text-danger"><?php echo $experienceRow["title"]?></h6>
                               <p class="card-text p-0 mb-2 mt-3"><?php echo $experienceRow["explanation"]?></p>
@@ -356,7 +361,11 @@
                           ?>
                           <hr>  
                           <div class="card">
-                            <h4 class="card-header"><?php echo $schoolRow["school_name"]?></h4>
+                            <h4 class="card-header d-flex align-items-center justify-content-between"><?php echo $schoolRow["school_name"]?>
+                          <form method="POST">
+                              <input class="d-none" name="resumeSchoolDeleteId" value="<?php echo $schoolRow["id"] ?>" />
+                              <button type="submit" name="resumeSchoolDeleteSubmit" class="btn btn-danger">X</button>
+                            </form></h4>
                             <div class="card-body">
                               <h5 class="card-title d-inline text-danger"><?php echo $schoolRow["department"]?></h5><small class="mx-4"><?php echo "(".$schoolRow["degree"]." degree)"?></small>
                               <p class="text-dark mt-2 mb-0"><strong><?php if($schoolRow["class"]==5){echo "Preparatory Class";}else{echo $schoolRow["class"]." Class";} ?></strong></p>
@@ -658,9 +667,19 @@
       $resumeSchoolIsGoing=$_POST["resumeSchoolIsGoing"];
       $resumeSchoolClass=$_POST["resumeSchoolClass"];
       $resumeSchoolPoint=$_POST["resumeSchoolPoint"];
+
+      echo "resume id = ".$resumeId."</br>";
+      echo "Degree = ".$resumeSchoolDegree."</br>";
+      echo "Department = ".$resumeSchoolDepartment."</br>";
+      echo "Started Date = ".$resumeSchoolStartedDate."</br>";
+      echo "end Date = ".$resumeSchoolEndDate."</br>";
+      echo "is Going = ".$resumeSchoolIsGoing."</br>";
+      echo "School name = ".$resumeSchoolName."</br>";
+      echo "Class = ".$resumeSchoolClass."</br>";
+      echo "point = ".$resumeSchoolPoint."</br>";
         
         
-      if($resumeSchoolIsGoing==1){
+       if($resumeSchoolIsGoing==1){
         $addSchoolRes = mysqli_query($db,"INSERT INTO resume_schools (resume_id, degree, department, started_date, is_going, school_name, class, agno) VALUES ('$resumeId','$resumeSchoolDegree','$resumeSchoolDepartment','$resumeSchoolStartedDate','$resumeSchoolIsGoing','$resumeSchoolName','$resumeSchoolClass','$resumeSchoolPoint')");  
       }else{
         $addSchoolRes = mysqli_query($db,"INSERT INTO resume_schools (resume_id, degree, department, started_date,end_date is_going, school_name, class, agno) VALUES ('$resumeId','$resumeSchoolDegree','$resumeSchoolDepartment','$resumeSchoolStartedDate','$resumeSchoolEndDate','$resumeSchoolIsGoing','$resumeSchoolName','$resumeSchoolClass',$resumeSchoolPoint)"); 
@@ -688,6 +707,23 @@
       echo $resumeLanguageLevel."</br>";
         
        $addLanguageRes = mysqli_query($db,"INSERT INTO resume_language (resume_id, language_id, language_level) VALUES ('$resumeId','$resumeLanguageName','$resumeLanguageLevel')"); 
+      }
+  ?>
+
+        <!-- Resume Experience Delete Submit -->
+
+  <?php
+      if(isset($_POST["resumeExperienceDeleteSubmit"])){
+        $resumeExperienceDeleteId=$_POST["resumeExperienceDeleteId"];
+        $deleteExperience = mysqli_query($db,"DELETE FROM resume_experience WHERE id='$resumeExperienceDeleteId'"); 
+      }
+  ?>
+
+        <!-- Resume School Delete Submit -->
+  <?php
+      if(isset($_POST["resumeSchoolDeleteSubmit"])){
+        $resumeSchoolDeleteId=$_POST["resumeSchoolDeleteId"];
+         $deleteSchool = mysqli_query($db,"DELETE FROM resume_schools WHERE id='$resumeSchoolDeleteId'"); 
       }
   ?>
 </body>
