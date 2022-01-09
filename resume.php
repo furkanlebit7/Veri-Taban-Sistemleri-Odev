@@ -300,8 +300,8 @@
                                       <label for="resumeSchoolDegree">Degree</label>
                                       <select name="resumeSchoolDegree" id="resumeSchoolDegree" class="form-control">
                                         <option value="Associate ">Associate Degree</option>
-                                        <option value="Bachelor's" selected>Bachelor's Degree</option>
-                                        <option value="Master's" >Master's Degree</option>
+                                        <option value="Bachelor" selected>Bachelor's Degree</option>
+                                        <option value="Master" >Master's Degree</option>
                                         <option value="Doctoral" >Doctoral Degree</option>
                                       </select>
                                     </div>
@@ -383,7 +383,7 @@
 
 
                       <?php 
-                        $techsRes = mysqli_query($db,"SELECT resume_techs.tech_level,techs.tech_name,techs.id FROM techs INNER JOIN resume_techs ON resume_techs.tech_id=techs.id WHERE resume_techs.resume_id=$resumeId");
+                        $techsRes = mysqli_query($db,"SELECT resume_techs.id AS resumeTechId,resume_techs.tech_level,techs.tech_name,techs.id FROM techs INNER JOIN resume_techs ON resume_techs.tech_id=techs.id WHERE resume_techs.resume_id=$resumeId");
                       ?>
                       <?php
                         $allTechsRes = mysqli_query($db,"SELECT * FROM techs");
@@ -449,7 +449,12 @@
                               $star=$techsRow["tech_level"];
                               ?>
                               <div class="d-flex align-items-center justify-content-between my-3">
-                                <h5 class="card-title m-0"><?php echo $techsRow["tech_name"] ?></h5>
+                                <h5 class="card-title d-flex  align-items-center justify-content-between  m-0">
+                                  <form method="POST">
+                                    <input class="d-none" value="<?php echo $techsRow["resumeTechId"] ?>" name="resumeTechnologyDeleteId"/>
+                                    <button class="btn btn-danger mx-3 py-0 px-2" name="resumeTechnologyDeleteSubmit">X</button>
+                                  </form>
+                                  <?php echo $techsRow["tech_name"] ?></h5>
                                 <span><?php while($star){echo "⭐";$star--;} ?></span>
                               </div>
                               <hr>
@@ -467,7 +472,7 @@
 
 
                       <?php
-                        $languageRes = mysqli_query($db,"SELECT resume_language.language_level, languages.language_name FROM languages INNER JOIN resume_language ON resume_language.language_id=languages.id WHERE resume_language.resume_id='$resumeId'");
+                        $languageRes = mysqli_query($db,"SELECT resume_language.id,resume_language.language_level, languages.language_name FROM languages INNER JOIN resume_language ON resume_language.language_id=languages.id WHERE resume_language.resume_id='$resumeId'");
                       ?>
                        <?php
                         $allLangRes = mysqli_query($db,"SELECT * FROM languages");
@@ -530,7 +535,12 @@
                             while($languageRow = mysqli_fetch_assoc($languageRes)){
                               ?>
                               <div class="d-flex align-items-center justify-content-between my-3">
-                                <h5 class="card-title m-0"><?php echo $languageRow["language_name"] ?></h5>
+                                <h5 class="card-title d-flex align-items-center justify-content-between m-0">
+                                  <form method="POST">
+                                    <input class="d-none" value="<?php echo $languageRow["id"] ?>" name="resumeLanguageDeleteId"/>
+                                    <button class="btn btn-danger mx-3 py-0 px-2" name="resumeLanguageDeleteSubmit">X</button>
+                                  </form>
+                                  <?php echo $languageRow["language_name"] ?></h5>
                                 <p class="p-0 m-0"><strong><?php echo $languageRow["language_level"] ?></strong></p>
                               </div>
                               <hr>
@@ -667,22 +677,12 @@
       $resumeSchoolIsGoing=$_POST["resumeSchoolIsGoing"];
       $resumeSchoolClass=$_POST["resumeSchoolClass"];
       $resumeSchoolPoint=$_POST["resumeSchoolPoint"];
-
-      echo "resume id = ".$resumeId."</br>";
-      echo "Degree = ".$resumeSchoolDegree."</br>";
-      echo "Department = ".$resumeSchoolDepartment."</br>";
-      echo "Started Date = ".$resumeSchoolStartedDate."</br>";
-      echo "end Date = ".$resumeSchoolEndDate."</br>";
-      echo "is Going = ".$resumeSchoolIsGoing."</br>";
-      echo "School name = ".$resumeSchoolName."</br>";
-      echo "Class = ".$resumeSchoolClass."</br>";
-      echo "point = ".$resumeSchoolPoint."</br>";
-        
         
        if($resumeSchoolIsGoing==1){
-        $addSchoolRes = mysqli_query($db,"INSERT INTO resume_schools (resume_id, degree, department, started_date, is_going, school_name, class, agno) VALUES ('$resumeId','$resumeSchoolDegree','$resumeSchoolDepartment','$resumeSchoolStartedDate','$resumeSchoolIsGoing','$resumeSchoolName','$resumeSchoolClass','$resumeSchoolPoint')");  
+
+        $addSchoolRes = mysqli_query($db,"INSERT INTO resume_schools (resume_id, degree, department, started_date, is_going, school_name, class, agno) VALUES ('$resumeId',$resumeSchoolDegree,'$resumeSchoolDepartment','$resumeSchoolStartedDate','$resumeSchoolIsGoing','$resumeSchoolName','$resumeSchoolClass','$resumeSchoolPoint')");  
       }else{
-        $addSchoolRes = mysqli_query($db,"INSERT INTO resume_schools (resume_id, degree, department, started_date,end_date is_going, school_name, class, agno) VALUES ('$resumeId','$resumeSchoolDegree','$resumeSchoolDepartment','$resumeSchoolStartedDate','$resumeSchoolEndDate','$resumeSchoolIsGoing','$resumeSchoolName','$resumeSchoolClass',$resumeSchoolPoint)"); 
+        $addSchoolRes = mysqli_query($db,"INSERT INTO resume_schools (resume_id, degree, department, started_date, end_date, is_going, school_name, class, agno) VALUES ('$resumeId','$resumeSchoolDegree','$resumeSchoolDepartment','$resumeSchoolStartedDate','$resumeSchoolEndDate','$resumeSchoolIsGoing','$resumeSchoolName','$resumeSchoolClass',$resumeSchoolPoint)");
       }
       }
   ?>
@@ -723,7 +723,28 @@
   <?php
       if(isset($_POST["resumeSchoolDeleteSubmit"])){
         $resumeSchoolDeleteId=$_POST["resumeSchoolDeleteId"];
-         $deleteSchool = mysqli_query($db,"DELETE FROM resume_schools WHERE id='$resumeSchoolDeleteId'"); 
+        $deleteSchool = mysqli_query($db,"DELETE FROM resume_schools WHERE id='$resumeSchoolDeleteId'"); 
+      }
+  ?>
+
+        <!-- Resume Technology Delete Submit -->
+  <?php
+      if(isset($_POST["resumeTechnologyDeleteSubmit"])){
+        $resumeTechnologyDeleteId=$_POST["resumeTechnologyDeleteId"];
+       $deleteTechnology = mysqli_query($db,"DELETE FROM resume_techs WHERE id='$resumeTechnologyDeleteId'"); 
+               
+
+      }
+  ?>
+
+        <!-- Resume Language Delete Submit -->
+  <?php
+      if(isset($_POST["resumeLanguageDeleteSubmit"])){
+        $resumeLanguageDeleteId=$_POST["resumeLanguageDeleteId"];
+
+       $deleteTechnology = mysqli_query($db,"DELETE FROM resume_language WHERE id='$resumeLanguageDeleteId'"); 
+               
+
       }
   ?>
 </body>
