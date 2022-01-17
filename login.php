@@ -132,7 +132,11 @@
         $_SESSION["userEmail"]=$signInEmail;
         $_SESSION["userId"]=$row["id"];
         $_SESSION["userType"]=$row["type"];
-        Header("Location:mainPage.php");
+        if($row["type"]==1){
+          Header("Location:completeCompanyLogin.php");
+        }else{
+           Header("Location:completeLogin.php");
+        }
        }else{
          ?>
          <script>
@@ -149,6 +153,7 @@
     if(isset($_POST["sign_up_button"])){
        $signUpEmail=$_POST["sign_up_email"];
        $signUpPassword=$_POST["sign_up_password"];
+       $sign_up_radio=$_POST["sign_up_radio"];
 
 
       $res = mysqli_query($db,"SELECT * FROM users WHERE email='$signUpEmail'");  
@@ -169,7 +174,7 @@
           }
         </script>
         <?php
-            $insert = mysqli_query($db,"INSERT INTO users (email,password)VALUES('$signUpEmail','$signUpPassword')");
+            $insert = mysqli_query($db,"INSERT INTO users (email,password,type)VALUES('$signUpEmail','$signUpPassword','$sign_up_radio')");
          }
     }
     

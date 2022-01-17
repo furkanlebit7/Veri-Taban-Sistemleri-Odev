@@ -702,9 +702,6 @@
       if(isset($_POST["resumeLanguageSubmit"])){
       $resumeLanguageName=$_POST["resumeLanguageName"];
       $resumeLanguageLevel=$_POST["resumeLanguageLevel"];
-
-      echo $resumeLanguageName."</br>";
-      echo $resumeLanguageLevel."</br>";
         
        $addLanguageRes = mysqli_query($db,"INSERT INTO resume_language (resume_id, language_id, language_level) VALUES ('$resumeId','$resumeLanguageName','$resumeLanguageLevel')"); 
       }

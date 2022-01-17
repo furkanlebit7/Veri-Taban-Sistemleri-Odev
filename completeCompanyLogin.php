@@ -86,9 +86,9 @@
         if(companyName.value=="" || companyName.value.length<=3||companyName.value.length>16){
           e.preventDefault();
           company_name_error.innerHTML="Şirket adı alanı 3 ile 16 karakter aralığında olması gerekiyor";
-        }else if(companyWebAdress.value=="" || companyWebAdress.value.length<=3||companyWebAdress.value.length>16){
+        }else if(companyWebAdress.value=="" || companyWebAdress.value.length<=3||companyWebAdress.value.length>100){
           e.preventDefault();
-          company_web_error.innerHTML="Şirket web adresi alanı 3 ile 16 karakter aralığında olması gerekiyor";
+          company_web_error.innerHTML="Şirket web adresi alanı 3 ile 100 karakter aralığında olması gerekiyor";
         }else if(companyPhone.value=="" || companyPhone.value.length!=11){
            e.preventDefault();
           company_phone_error.innerHTML="Şirket telefonu alanı 11 karakter uzunluğunda olmalı";
