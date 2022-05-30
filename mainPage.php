@@ -181,7 +181,49 @@
               
         <div class="col-9">
           <div class="container mt-4 mb-4 p-3">
-           
+            <h2 class="text-primary">Lastly Jobs</h2>
+              <div class="cards d-flex flex-wrap">
+            
+            <?php 
+            
+                //gets resume
+                $jobAdvertisementsRes = mysqli_query($db,"SELECT * FROM last_3_job_ads");  
+                $jobAdvertisementsRes1=mysqli_num_rows($jobAdvertisementsRes);
+                $colorCounter=0;
+                
+                while($jobAdvertisementsRow = mysqli_fetch_assoc($jobAdvertisementsRes)){
+                  ?>
+                  <a href="./jobAdvertisementDetail.php?advertisementId=<?php echo$jobAdvertisementsRow["id"] ?>" style="text-decoration:none;" class="m-1">
+                      <div class="card text-white <?php
+                       if($colorCounter%6==0){echo "bg-primary";}
+                       if($colorCounter%6==1) {echo "bg-secondary";}
+                       if($colorCounter%6==2) {echo "bg-success";}
+                       if($colorCounter%6==3) {echo "bg-danger";}
+                       if($colorCounter%6==4) {echo "bg-warning";}
+                       if($colorCounter%6==5) {echo "bg-info";}
+                       if($colorCounter%6==6) {echo "bg-dark";}
+                       ?>" style="width: 18rem;">
+                      <div class="card-header"><?php echo $jobAdvertisementsRow["company_name"] ?></div>
+                      <div class="card-body">
+                        <h5 class="card-title"><?php echo $jobAdvertisementsRow["title"] ?></h5>
+                        <p class="card-title"><?php echo "( ".$jobAdvertisementsRow["city_name"]." )" ?></p>
+                        <p class="card-title"><?php echo $jobAdvertisementsRow["job_feature"] ?></p>
+                        <p class="card-title"><?php echo $jobAdvertisementsRow["job_type"] ?></p>
+                        <p class="card-text"><?php echo $jobAdvertisementsRow["min_salary"]."₺ <---> ".$jobAdvertisementsRow["max_salary"]."₺" ?></p>
+                      </div>
+                      <div class="card-footer text-center">
+                          <small class="text-white"><?php echo "📅 ".$jobAdvertisementsRow["created_date"]." 📅" ?></small>
+                        </div>
+                    </div>
+                    </a>
+              <?php
+               $colorCounter++;
+                }
+             
+            ?>
+        
+
+            </div>
           </div>
         </div>
       </div>

@@ -185,6 +185,7 @@
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="jobInput">
                 <button class="btn btn-outline-info my-2 my-sm-0" name="jobSearchSubmit" type="submit">Search</button>
               </form>
+             
             </nav>
               <div class="cards d-flex flex-wrap">
             

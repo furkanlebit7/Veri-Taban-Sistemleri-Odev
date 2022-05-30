@@ -176,10 +176,14 @@
         </div>
         <?php
         }
+         $totalBlog = mysqli_query($db,"SELECT COUNT(id) AS counn FROM blogs");
+         $totalBlog1=mysqli_num_rows($totalBlog);
+         $totalBlogRow = mysqli_fetch_assoc($totalBlog);
         ?>
               
         <div class="col-9">
           <div class="container mt-4 mb-4 p-3">
+            <h6 class="text-primary">Total Blog =<?php echo $totalBlogRow["counn"] ?> </h6>
               <div class="cards d-flex flex-wrap">
                     <?php
                   $companyBlogRes = mysqli_query($db,"SELECT blogs.id,blogs.blog_text,blogs.blog_tittle,blogs.post_date,blogs.blog_image,employers.company_name FROM blogs JOIN employers ON blogs.employer_id=employers.id ORDER BY post_date DESC");
