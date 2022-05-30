@@ -137,6 +137,7 @@
                 <script>
                 window.onload=function(){
                 alert("Başarılı");
+                window.location.href = "http://localhost/veritabani/profile.php";
                 }
                 </script>
                 <?php

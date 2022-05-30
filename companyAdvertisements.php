@@ -188,16 +188,16 @@
         <div class="col-9">
           <div class="container mt-4 mb-4 p-3">
             <!-- Button trigger modal -->
-                          <button type="button" class="btn btn-success mb-2 col-4 text-light" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                          <button type="button" class="btn btn-success mb-2 col-4 text-light" data-bs-toggle="modal" data-bs-target="#exampleModalLabeladd">
                             Add Advertisement
                           </button>
 
                           <!-- Modal -->
-                          <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                          <div class="modal fade" id="exampleModalLabeladd" tabindex="-1" aria-labelledby="exampleModalLabeladd" aria-hidden="true">
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLabel2">Add Advertisement</h5>
+                                  <h5 class="modal-title" id="exampleModalLabeladd">Add Advertisement</h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">

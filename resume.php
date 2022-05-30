@@ -156,7 +156,7 @@
           <div class="container mt-4 mb-4 p-3">
             
                         <?php
-                        $experienceRes = mysqli_query($db,"SELECT resume_experience.id,resume_experience.workplace_name,resume_experience.explanation, resume_experience.started_date, resume_experience.end_date,resume_experience.is_going,job_titles.title FROM job_titles INNER JOIN resume_experience ON resume_experience.position_id=job_titles.id WHERE resume_experience.resume_id=$resumeId");
+                        $experienceRes = mysqli_query($db,"SELECT resume_experience.id,resume_experience.workplace_name,resume_experience.explanation, resume_experience.started_date, resume_experience.end_date,resume_experience.is_going,job_titles.title FROM job_titles INNER JOIN resume_experience ON resume_experience.position_id=job_titles.id WHERE resume_experience.resume_id=$resumeId ORDER BY started_date DESC");
 
                         $positionsRes = mysqli_query($db,"SELECT * FROM job_titles");
                         ?>
@@ -248,7 +248,7 @@
                             <div class="card-body">
                               <h6 class="card-title text-danger"><?php echo $experienceRow["title"]?></h6>
                               <p class="card-text p-0 mb-2 mt-3"><?php echo $experienceRow["explanation"]?></p>
-                              <p class="text-muted m-0 p-0 float-end mt-3"><small><?php echo $experienceRow["started_date"]?></small> <-> <small><?php if(!$experienceRow["end_date"]){echo "Present";}else{echo $experienceRow["end_date"]; } ?></small><p>
+                              <p class="text-muted m-0 p-0 float-end mt-3"><small><?php echo $experienceRow["started_date"]?></small> <-> <small><?php if($experienceRow["is_going"]==1){echo "Present";}else{echo $experienceRow["end_date"]; } ?></small><p>
                             </div>
                           </div>
                           <?php

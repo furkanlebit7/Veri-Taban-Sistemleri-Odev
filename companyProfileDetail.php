@@ -263,18 +263,24 @@
                     <div class="card-body d-flex flex-wrap justify-content-center">
                     <?php
                     while($companyBlogRow = mysqli_fetch_assoc($companyBlogRes)){
-                      ?>
-                    <a href="./blogDetail.php?blogId=<?php echo$companyBlogRow["id"] ?>" class="mx-2 text-dark mb-3" style="text-decoration:none;">
-                     <div class="card" style="width: 16em;">
-                        <img class="card-img-top" src="photos/<?php echo $companyBlogRow["blog_image"] ?>" alt="Blog image cap">
-                        <div class="card-body">
+                    ?>
+                   <a href="./blogDetail.php?blogId=<?php echo$companyBlogRow["id"] ?>" style="text-decoration:none;" class="m-1 mb-3">
+                   
+                      <div class="card text-dark text-center" style="width: 17rem;">
+                        <img class="card-img-top" src="photos/<?php echo $companyBlogRow["blog_image"] ?>" alt="Blog image cap" style="width:100%;height:150px;">
+                        
+                        <div class="card-body" style="height: 180px;overflow: hidden;">
                           <h5 class="card-title"><?php echo $companyBlogRow["blog_tittle"] ?></h5>
-                          <p class="card-text"><?php echo substr($companyBlogRow["blog_text"],0,110)."..." ?></p>
+                          <p class="card-text"><?php echo substr($companyBlogRow["blog_text"],0,50 )."..." ?></p>
+
                         </div>
+                          <div class="card-footer text-center">
+                            <small class="text-dark"><?php echo "📅 ".$companyBlogRow["post_date"]." 📅" ?></small>
+                          </div>
                       </div>
-                   </a>
-                      <?php
-                    }
+                    </a>
+                    <?php
+                }
                     ?>
                    
                    

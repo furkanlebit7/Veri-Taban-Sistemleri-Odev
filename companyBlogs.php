@@ -241,8 +241,8 @@
                          if($colorCounter%6==4) {echo "border-warning";}
                          if($colorCounter%6==5) {echo "border-info";}
                          if($colorCounter%6==6) {echo "border-dark";}
-                         ?>" style="width: 17rem;">
-                        <img class="card-img-top" src="photos/<?php echo $companyBlogRow["blog_image"] ?>" alt="Blog image cap">
+                         ?>" style="width: 17rem; ">
+                        <img class="card-img-top" style="width:100%;height:150px;" src="photos/<?php echo $companyBlogRow["blog_image"] ?>" alt="Blog image cap">
                         
                        <div class="card-body" style="height: 180px;overflow: hidden;">
                           <h5 class="card-title"><?php echo $companyBlogRow["blog_tittle"] ?></h5>
@@ -312,8 +312,10 @@
       $resumeBlogImage=$_POST["resumeBlogImage"];
 
       $date = date("Y.m.d");
-        
-         $addBlog = mysqli_query($db,"INSERT INTO blogs (employer_id, blog_text, blog_image,blog_tittle,post_date) VALUES ('$id','$companyBlogText','$resumeBlogImage','$companyBlogTitle','$date')"); 
+       
+
+         $addBlogs = mysqli_query($db,"INSERT INTO blogs (employer_id, blog_text, blog_image, blog_tittle, post_date) VALUES ('$id','$companyBlogText','$resumeBlogImage','$companyBlogTitle','$date')"); 
+         
       }
   ?>
 
